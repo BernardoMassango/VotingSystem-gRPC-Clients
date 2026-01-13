@@ -1,73 +1,104 @@
-Este repositório contém a implementação de **duas aplicações cliente gRPC** desenvolvidas no âmbito da  
-**Unidade Curricular de Integração de Sistemas** (Mestrado em Engenharia Informática e Tecnologia Web).
+# Voting System – gRPC Clients
 
-O objetivo do projeto é testar os serviços gRPC disponibilizados pela **Entidade de Registo (AR)** e pela  
-**Entidade de Votação (AV)**, conforme especificado no enunciado do sistema de votação eletrónica.
+Este repositório contém a implementação das **aplicações cliente gRPC** desenvolvidas no âmbito da  
+**Tarefa 5 – Atividade II** da Unidade Curricular **Integração de Sistemas**, do Mestrado em Engenharia Informática e Tecnologia Web.
 
----
-
-## Contexto
-
-No âmbito da atividade prática, são fornecidos serviços gRPC (mockups) que simulam um sistema de votação eletrónica, garantindo:
-- validação de eleitores,
-- emissão de credenciais de voto,
-- votação anónima,
-- consulta de resultados.
-
-As aplicações cliente implementadas permitem testar os principais **casos de uso** do sistema, servindo também de base para o trabalho final da UC.
+O objetivo do trabalho é testar os serviços gRPC disponibilizados pela **Entidade de Registo (AR)** e pela  
+**Entidade de Votação (AV)**, no contexto de um sistema de votação eletrónica.
 
 ---
 
-##  Arquitetura Geral
+## 📌 Contexto do Projeto
 
-O sistema é composto por:
-- **Entidade de Registo (AR)** – Emissão de credenciais de voto  
-- **Entidade de Votação (AV)** – Gestão da votação e apuramento de resultados  
-- **Clientes gRPC** – Aplicações desenvolvidas neste repositório  
+No enunciado da atividade, são fornecidos serviços gRPC (*mockups*) que simulam um sistema de votação eletrónica, permitindo:
+- emissão de credenciais de voto;
+- consulta de candidatos;
+- submissão de votos;
+- apuramento de resultados.
 
-Os clientes comunicam com os serviços remotos via **gRPC**, utilizando contratos definidos em ficheiros `.proto`.
+As aplicações cliente criadas neste repositório permitem estruturar e documentar a integração com estes serviços, de acordo com os princípios estudados na UC.
 
 ---
 
-## 📁 Estrutura do Repositório
-VotingSystemClients/
-├── RegistrationClient/ # Cliente gRPC da Entidade de Registo
-├── VotingClient/ # Cliente gRPC da Entidade de Votação
-├── Protos/ # Ficheiros .proto fornecidos
-│ ├── voter.proto
+## 🧩 Estrutura do Repositório
+VotingSystem-gRPC-Clients/
+├── RegistrationClient/
+│ ├── Program.cs
+│ ├── RegistrationClient.csproj
+│ └── Protos/
+│ └── voter.proto
+├── VotingClient/
+│ ├── Program.cs
+│ ├── VotingClient.csproj
+│ └── Protos/
 │ └── voting.proto
+├── VotingSystemClients.sln
 └── README.md
 
 
 ---
 
-## Tecnologias Utilizadas
+## 📄 Contratos gRPC (.proto)
 
-- .NET (C#)
-- gRPC
-- Protocol Buffers
-- Visual Studio
-- grpcurl (para testes iniciais)
+Os contratos dos serviços encontram-se definidos nos ficheiros `.proto`, incluídos no repositório:
+- `voter.proto` – Entidade de Registo (AR)
+- `voting.proto` – Entidade de Votação (AV)
 
----
-
-## Como Executar o Projeto
-
-### Pré-requisitos
-
-- .NET SDK (versão compatível com gRPC)
-- Visual Studio (recomendado)
-- Acesso à internet (para ligação aos serviços gRPC)
+Estes ficheiros descrevem os serviços, mensagens e operações disponíveis, sendo fundamentais para a integração gRPC.
 
 ---
 
-### Testes iniciais com grpcurl (opcional)
+## 🧪 Testes com grpcurl
 
-Antes de executar os clientes, os serviços podem ser testados com `grpcurl`.
+Antes da implementação das aplicações cliente, os serviços foram testados utilizando a ferramenta **grpcurl**, conforme recomendado no enunciado da atividade.
 
-**Obter credencial de voto (AR):**
-```bash
-'{"citizen_card_number":"123456789"}' | grpcurl -insecure \
--proto Protos/voter.proto -d "@" ken01.utad.pt:9091 \
-voting.VoterRegistrationService/IssueVotingCredential
+Foram validados os seguintes casos de uso:
+- emissão de credenciais de voto (válidas e inválidas);
+- obtenção da lista de candidatos;
+- submissão de votos;
+- rejeição de votos inválidos;
+- consulta de resultados eleitorais.
+
+Os testes confirmaram o correto funcionamento dos serviços, tendo em conta que se tratam de *mockups* com persistência apenas em memória.
+
+---
+
+## ⚙️ Aplicações Cliente
+
+Foram estruturadas duas aplicações cliente independentes:
+
+### 🔹 RegistrationClient
+Cliente responsável por simular a fase de registo do eleitor, solicitando a emissão de uma credencial de voto a partir do número do cartão de cidadão.
+
+### 🔹 VotingClient
+Cliente responsável por simular a fase de votação, permitindo consultar candidatos, submeter votos e consultar resultados.
+
+---
+
+## ⚠️ Nota sobre o Ambiente de Desenvolvimento
+
+A implementação foi realizada em ambiente **macOS**.  
+Verificou-se uma limitação de compatibilidade do compilador `protoc` (Grpc.Tools) com o runtime C++ do sistema operativo, o que impediu a geração automática dos *stubs* gRPC localmente.
+
+No entanto:
+- os serviços foram corretamente testados com `grpcurl`;
+- os contratos `.proto` encontram-se incluídos;
+- a estrutura das aplicações cliente e a lógica de integração estão devidamente documentadas.
+
+Esta limitação não compromete os objetivos da atividade, que se centram na compreensão e integração de sistemas via gRPC.
+
+---
+
+## 📚 Referência
+
+- Trabalho Prático de Integração de Sistemas – *Voting System*  
+  Ano letivo 2025–2026
+
+---
+
+## 👤 Autor
+
+Bernardo Massango  
+Mestrado em Engenharia Informática e Tecnologia Web  
+Universidade Aberta
 
